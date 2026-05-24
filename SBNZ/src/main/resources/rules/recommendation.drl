@@ -1,0 +1,75 @@
+package rules
+
+import model.User;
+import model.Venue;
+import model.VenueCandidate;
+import model.Recommendation;
+
+rule "Music match"
+when
+    $u : User()
+    $v : Venue()
+    eval($u.likesAnyMusic($v.getSupportedMusic()))
+then
+    insert(new VenueCandidate($v, 15));
+end
+
+rule "Very affordable venue"
+when
+    $u : User($budget : budget)
+    $v : Venue(
+        averagePrice < ($budget * 0.8)
+    )
+then
+    insert(new VenueCandidate($v, 5));
+end
+
+rule "Within budget venue"
+when
+    $u : User($budget : budget)
+    $v : Venue(
+        averagePrice >= ($budget * 0.8),
+        averagePrice <= ($budget * 1.2)
+    )
+then
+    insert(new VenueCandidate($v, 2));
+end
+
+rule "Expensive venue"
+when
+    $u : User($budget : budget)
+    $v : Venue(
+        averagePrice > ($budget * 1.2)
+    )
+then
+    insert(new VenueCandidate($v, -5));
+end
+
+rule "Crowded venue"
+when
+    $u : User(likesCrowd == false)
+    $v : Venue(crowded == true)
+then
+    insert(new VenueCandidate($v, -5));
+end
+
+rule "Accumulate score"
+salience -10
+when
+    $v : Venue()
+    $total : Number()
+        from accumulate(
+            VenueCandidate(
+                venue == $v,
+                $s : score
+            ),
+            sum($s)
+        )
+then
+    insert(
+        new Recommendation(
+            $v.getName(),
+            $total.intValue()
+        )
+    );
+end
