@@ -1,0 +1,126 @@
+package rules
+
+import app.model.user.UserPreferences
+import app.model.recommendation.Venue
+import app.model.recommendation.VenueCandidate
+import app.model.recommendation.Recommendation
+import app.model.recommendation.Match
+import app.model.enums.MatchType
+
+rule "Very affordable venue"
+when
+    $u : UserPreferences($budget : budget)
+    $v : Venue(averagePrice < ($budget * 0.8),
+               $budget > 0)
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.BUDGET,
+            5
+        )
+    );
+end
+
+rule "Within budget venue"
+when
+    $u : UserPreferences($budget : budget)
+    $v : Venue(
+        averagePrice >= ($budget * 0.8),
+        averagePrice <= ($budget * 1.2),
+        $budget > 0
+    )
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.BUDGET,
+            2
+        )
+    );
+
+end
+
+rule "Expensive venue"
+when
+    $u : UserPreferences($budget : budget)
+    $v : Venue(
+        averagePrice > ($budget * 1.2),
+        $budget > 0
+    )
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.BUDGET,
+            -5
+        )
+    );
+end
+
+rule "User dislikes crowd"
+when
+    $u : UserPreferences(likesCrowd == false)
+    $v : Venue(crowded == false)
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.CROWD,
+            5
+        )
+    );
+end
+
+rule "User likes crowd"
+when
+    $u : UserPreferences(likesCrowd == true)
+    $v : Venue(crowded == true)
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.CROWD,
+            5
+        )
+    );
+end
+
+rule "Create venue candidate"
+salience -10
+when
+
+    $v : Venue()
+    $total : Number()
+        from accumulate(
+            Match(
+                venue == $v,
+                $s : score
+            ),
+            sum($s)
+        )
+then
+    insert(
+        new VenueCandidate(
+            $v,
+            $total.intValue()
+        )
+    );
+end
+
+rule "Create recommendation"
+when
+    $vc : VenueCandidate(
+        $venue : venue,
+        $score : score,
+        score > 0
+    )
+then
+    insert(
+        new Recommendation(
+            $venue.getId(),
+            $venue.getName(),
+            $score
+        )
+    );
+end
