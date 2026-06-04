@@ -1,0 +1,31 @@
+template header
+
+eventType
+score
+
+package rules.forward
+
+import app.model.user.UserPreferences
+import app.model.recommendation.Venue
+import app.model.recommendation.Match
+import app.model.enums.MatchType
+import app.model.enums.EventType
+
+template "EventRule"
+
+rule "Event @{eventType}"
+
+when
+    UserPreferences(preferredEventTypes contains EventType.@{eventType})
+    $v : Venue(events contains EventType.@{eventType})
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.EVENT,
+            @{score}
+        )
+    );
+end
+
+end template

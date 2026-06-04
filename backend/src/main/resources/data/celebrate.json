@@ -1,0 +1,61 @@
+{
+  "celebration_type": {
+    "Birthday": [
+      ["CELEBRATE", "GROUP_FRIENDLY"],
+      ["GROUP_FRIENDLY", "LARGE_CAPACITY"],
+      ["GROUP_FRIENDLY", "COMFORTABLE"]
+    ],
+
+    "Promotion": [
+      ["CELEBRATE", "PREMIUM_EXPERIENCE"],
+      ["PREMIUM_EXPERIENCE", "PREMIUM_SERVICE"]
+    ],
+
+    "Graduation": [
+      ["CELEBRATE", "FUN_EXPERIENCE"],
+      ["FUN_EXPERIENCE", "HIGH_SOCIAL_LEVEL"]
+    ],
+
+    "Other": [
+      ["CELEBRATE", "GOOD_AMBIANCE"]
+    ]
+  },
+
+  "group_size": {
+    "2-4": [],
+
+    "5-10": [
+      ["CELEBRATE", "MEDIUM_CAPACITY"]
+    ],
+
+    "10+": [
+      ["CELEBRATE", "LARGE_CAPACITY"]
+    ]
+  },
+
+  "atmosphere": {
+    "Elegant": [
+      ["CELEBRATE", "GOOD_AMBIANCE"]
+    ],
+
+    "Energetic": [
+      ["CELEBRATE", "HIGH_SOCIAL_LEVEL"]
+    ],
+
+    "Relaxed": [
+      ["CELEBRATE", "COMFORTABLE"]
+    ]
+  },
+
+  "party_level": {
+    "Very Lively": [
+      ["CELEBRATE", "LIVE_MUSIC"]
+    ],
+
+    "Balanced": [],
+
+    "Quiet": [
+      ["CELEBRATE", "LOW_NOISE"]
+    ]
+  }
+}

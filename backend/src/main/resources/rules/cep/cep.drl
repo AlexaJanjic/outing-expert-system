@@ -1,0 +1,48 @@
+package rules.cep
+
+import app.cep.ReservationEvent
+import app.cep.TrendingVenueFact
+import app.cep.CrowdedVenueFact
+
+declare ReservationEvent
+    @role(event)
+    @timestamp(dateTime)
+end
+
+declare TrendingVenueFact
+    @role(event)
+    @expires(30m)
+end
+
+declare CrowdedVenueFact
+    @role(event)
+    @expires(30m)
+end
+
+rule "Venue is trending"
+when
+    $e : ReservationEvent($venueId : venueId)
+    not TrendingVenueFact(venueId == $venueId)
+    Number(intValue >= 15)
+        from accumulate(
+            ReservationEvent(venueId == $venueId)
+            over window:time(60m),
+            count(1)
+        )
+then
+    insert(new TrendingVenueFact($venueId));
+end
+
+rule "Venue is crowded"
+when
+    $e : ReservationEvent($venueId : venueId)
+    not CrowdedVenueFact(venueId == $venueId)
+    Number(intValue >= 30)
+        from accumulate(
+            ReservationEvent(venueId == $venueId)
+            over window:time(30m),
+            count(1)
+        )
+then
+    insert(new CrowdedVenueFact($venueId));
+end

@@ -1,0 +1,53 @@
+{
+  "relax_style": {
+    "Quiet Atmosphere": [
+      ["RELAX", "LOW_NOISE"]
+    ],
+
+    "Good Food": [
+      ["RELAX", "QUALITY_FOOD"]
+    ],
+
+    "Live Music": [
+      ["RELAX", "LIVE_MUSIC"]
+    ],
+
+    "Outdoor Seating": [
+      ["RELAX", "OUTDOOR_SEATING"]
+    ]
+  },
+
+  "noise": {
+    "Very Sensitive": [
+      ["RELAX", "LOW_NOISE"]
+    ],
+
+    "Somewhat Sensitive": [],
+
+    "Not Sensitive": []
+  },
+
+  "crowd": {
+    "Very Little": [
+      ["RELAX", "NOT_CROWDED"]
+    ],
+
+    "Some Activity": [],
+
+    "Doesn't Matter": []
+  },
+
+  "setting": {
+    "Indoor Lounge": [
+      ["RELAX", "COMFORTABLE"]
+    ],
+
+    "Garden Terrace": [
+      ["RELAX", "OUTDOOR_SEATING"]
+    ],
+
+    "Riverside View": [
+      ["RELAX", "OUTDOOR_SEATING"]
+    ]
+  }
+}

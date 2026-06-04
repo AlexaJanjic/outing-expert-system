@@ -1,0 +1,113 @@
+package rules.backward
+
+import app.model.backward.Goal
+import app.model.backward.GoalFact
+import app.model.backward.GoalRule
+import app.model.recommendation.Venue
+import app.model.enums.EventType
+
+
+rule "Low Price"
+when
+    Venue(averagePrice <= 15)
+then
+    insert(new GoalFact(Goal.LOW_PRICE));
+end
+
+rule "Not Crowded"
+when
+    Venue(crowded == false)
+then
+    insert(new GoalFact(Goal.NOT_CROWDED));
+end
+
+rule "High Social Level"
+when
+    Venue(socialLevel >= 8)
+then
+    insert(new GoalFact(Goal.HIGH_SOCIAL_LEVEL));
+end
+
+rule "Good Ambiance"
+when
+    Venue(atmosphereLevel >= 8)
+then
+    insert(new GoalFact(Goal.GOOD_AMBIANCE));
+end
+
+rule "Low Noise"
+when
+    Venue(noiseLevel <= 3)
+then
+    insert(new GoalFact(Goal.LOW_NOISE));
+end
+
+rule "Premium Service"
+when
+    Venue(premiumService == true)
+then
+    insert(new GoalFact(Goal.PREMIUM_SERVICE));
+end
+
+rule "Comfortable"
+when
+    Venue(comfortLevel >= 8)
+then
+    insert(new GoalFact(Goal.COMFORTABLE));
+end
+
+rule "Private Tables"
+when
+    Venue(privateTables == true)
+then
+    insert(new GoalFact(Goal.PRIVATE_TABLES));
+end
+
+rule "Quality Food"
+when
+    Venue(qualityFood == true)
+then
+    insert(new GoalFact(Goal.QUALITY_FOOD));
+end
+
+rule "Outdoor Seating"
+when
+    Venue(outdoorSeating == true)
+then
+    insert(new GoalFact(Goal.OUTDOOR_SEATING));
+end
+
+rule "Games Available"
+when
+    Venue(gamesAvailable == true)
+then
+    insert(new GoalFact(Goal.GAMES_AVAILABLE));
+end
+
+rule "Sports Streaming"
+when
+    Venue(sportsStreaming == true)
+then
+    insert(new GoalFact(Goal.SPORTS_STREAMING));
+end
+
+rule "Live Music"
+when
+    Venue(events contains EventType.LIVE_BAND)
+then
+    insert(new GoalFact(Goal.LIVE_MUSIC));
+end
+
+rule "DJ Event"
+when
+    Venue(events contains EventType.DJ)
+then
+    insert(new GoalFact(Goal.DJ_EVENT));
+end
+
+query goalSatisfied(Goal targetGoal)
+    GoalFact(goal == targetGoal)
+or(
+    GoalRule(targetGoal, child;)
+    and ?goalSatisfied(child;))
+end

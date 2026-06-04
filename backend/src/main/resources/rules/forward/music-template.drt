@@ -1,0 +1,32 @@
+template header
+
+musicType
+score
+
+package rules.forward
+
+import app.model.user.UserPreferences
+import app.model.recommendation.Venue
+import app.model.recommendation.Match
+import app.model.enums.MatchType
+import app.model.enums.MusicType
+
+template "MusicRule"
+
+rule "Music @{musicType}"
+
+when
+    UserPreferences(preferredMusic contains MusicType.@{musicType})
+    $v : Venue(supportedMusic contains MusicType.@{musicType})
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.MUSIC,
+            @{score}
+        )
+    );
+
+end;
+
+end template

@@ -1,0 +1,144 @@
+package rules.forward
+
+import app.model.user.UserPreferences
+import app.model.recommendation.Venue
+import app.model.recommendation.VenueCandidate
+import app.model.recommendation.Recommendation
+import app.model.recommendation.Match
+import app.model.enums.MatchType
+import app.cep.ReservationEvent
+import app.cep.TrendingVenueFact
+import app.cep.CrowdedVenueFact
+
+rule "Very affordable venue"
+when
+    $u : UserPreferences($budget : budget)
+    $v : Venue(averagePrice < ($budget * 0.8),
+               $budget > 0)
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.BUDGET,
+            5
+        )
+    );
+end
+
+rule "Within budget venue"
+when
+    $u : UserPreferences($budget : budget)
+    $v : Venue(
+        averagePrice >= ($budget * 0.8),
+        averagePrice <= ($budget * 1.2),
+        $budget > 0
+    )
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.BUDGET,
+            2
+        )
+    );
+
+end
+
+rule "Expensive venue"
+when
+    $u : UserPreferences($budget : budget)
+    $v : Venue(
+        averagePrice > ($budget * 1.2),
+        $budget > 0
+    )
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.BUDGET,
+            -5
+        )
+    );
+end
+
+rule "Crowded venue penalty"
+when
+    UserPreferences(likesCrowd == false)
+    $v : Venue($id : id)
+    CrowdedVenueFact(venueId == $id)
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.CROWD,
+            -10
+        )
+    );
+end
+
+rule "Crowded venue bonus"
+when
+    UserPreferences(likesCrowd == true)
+    $v : Venue($id : id)
+    CrowdedVenueFact(venueId == $id)
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.CROWD,
+            10
+        )
+    );
+end
+
+rule "Trending venue bonus"
+when
+    $v : Venue($id : id)
+    TrendingVenueFact(venueId == $id)
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.TRENDING,
+            20
+        )
+    );
+end
+
+rule "Create venue candidate"
+salience -10
+when
+    $v : Venue()
+    $total : Number()
+        from accumulate(
+            Match(
+                venue == $v,
+                $s : score
+            ),
+            sum($s)
+        )
+then
+    insert(
+        new VenueCandidate(
+            $v,
+            $total.intValue()
+        )
+    );
+end
+
+rule "Create recommendation"
+when
+    $vc : VenueCandidate(
+        $venue : venue,
+        $score : score,
+        score > 0
+    )
+then
+    insert(
+        new Recommendation(
+            $venue.getId(),
+            $venue.getName(),
+            $score
+        )
+    );
+end
