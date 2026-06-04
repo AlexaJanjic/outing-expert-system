@@ -1,4 +1,4 @@
-package rules
+package rules.forward
 
 import app.model.user.UserPreferences
 import app.model.recommendation.Venue
@@ -6,6 +6,9 @@ import app.model.recommendation.VenueCandidate
 import app.model.recommendation.Recommendation
 import app.model.recommendation.Match
 import app.model.enums.MatchType
+import app.cep.ReservationEvent
+import app.cep.TrendingVenueFact
+import app.cep.CrowdedVenueFact
 
 rule "Very affordable venue"
 when
@@ -58,30 +61,46 @@ then
     );
 end
 
-rule "User dislikes crowd"
+rule "Crowded venue penalty"
 when
-    $u : UserPreferences(likesCrowd == false)
-    $v : Venue(crowded == false)
+    UserPreferences(likesCrowd == false)
+    $v : Venue($id : id)
+    CrowdedVenueFact(venueId == $id)
 then
     insert(
         new Match(
             $v,
             MatchType.CROWD,
-            5
+            -10
         )
     );
 end
 
-rule "User likes crowd"
+rule "Crowded venue bonus"
 when
-    $u : UserPreferences(likesCrowd == true)
-    $v : Venue(crowded == true)
+    UserPreferences(likesCrowd == true)
+    $v : Venue($id : id)
+    CrowdedVenueFact(venueId == $id)
 then
     insert(
         new Match(
             $v,
             MatchType.CROWD,
-            5
+            10
+        )
+    );
+end
+
+rule "Trending venue bonus"
+when
+    $v : Venue($id : id)
+    TrendingVenueFact(venueId == $id)
+then
+    insert(
+        new Match(
+            $v,
+            MatchType.TRENDING,
+            20
         )
     );
 end
@@ -89,7 +108,6 @@ end
 rule "Create venue candidate"
 salience -10
 when
-
     $v : Venue()
     $total : Number()
         from accumulate(

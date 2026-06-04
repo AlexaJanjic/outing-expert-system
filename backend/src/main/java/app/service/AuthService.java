@@ -4,19 +4,16 @@ import app.dto.LoginRequest;
 import app.dto.RegisterRequest;
 import app.exception.ApiException;
 import app.model.user.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import app.repository.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder){
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public void Register(RegisterRequest registerRequest){
 

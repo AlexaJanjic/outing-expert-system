@@ -1,5 +1,7 @@
 package app.service;
 
+import app.cep.CrowdedVenueFact;
+import app.cep.TrendingVenueFact;
 import app.model.recommendation.Recommendation;
 import app.model.recommendation.RecommendationHistory;
 import app.model.recommendation.RecommendationSession;
@@ -26,11 +28,12 @@ import java.util.Map;
 public class RecommendationService {
     private final VenueRepository venueRepository;
     private final RecommendationHistoryRepository recommendationHistoryRepository;
+    private final CepService cepService;
 
     public List<Recommendation> generate(UserPreferences preferences) throws Exception {
         KieHelper kieHelper = new KieHelper();
 
-        kieHelper.addResource(ResourceFactory.newClassPathResource("rules/recommendation.drl"), ResourceType.DRL);
+        kieHelper.addResource(ResourceFactory.newClassPathResource("rules/forward/recommendation.drl"), ResourceType.DRL);
 
         kieHelper.addContent(generateMusicRules(), ResourceType.DRL);
 
@@ -40,16 +43,20 @@ public class RecommendationService {
 
         kieSession.insert(preferences);
 
+        cepService.getTrendingVenueIds().forEach(id -> kieSession.insert(new TrendingVenueFact(id)));
+
+        cepService.getCrowdedVenueIds().forEach(id -> kieSession.insert(new CrowdedVenueFact(id)));
+
         venueRepository.findAll().forEach(kieSession::insert);
 
         int fired = kieSession.fireAllRules();
 
-        List<Recommendation> recommendations =
-                kieSession.getObjects(o -> o instanceof Recommendation)
-                        .stream()
-                        .map(o -> (Recommendation) o)
-                        .sorted(Comparator.comparingInt(Recommendation::getFinalScore).reversed())
-                        .toList();
+        List<Recommendation> recommendations = kieSession.getObjects(o -> o instanceof Recommendation)
+                .stream()
+                .map(o -> (Recommendation) o)
+                .sorted(Comparator.comparingInt(Recommendation::getFinalScore).reversed())
+                .limit(5)
+                .toList();
 
         kieSession.dispose();
 
@@ -57,8 +64,8 @@ public class RecommendationService {
     }
 
     private String generateMusicRules() throws Exception{
-        InputStream templateStream = ResourceFactory.newClassPathResource("rules/music-template.drt").getInputStream();
-        InputStream csvStream = ResourceFactory.newClassPathResource("rules/music-data.csv").getInputStream();
+        InputStream templateStream = ResourceFactory.newClassPathResource("rules/forward/music-template.drt").getInputStream();
+        InputStream csvStream = ResourceFactory.newClassPathResource("rules/forward/music-data.csv").getInputStream();
 
         List<Map<String, Object>> rows = new ArrayList<>();
 
@@ -81,8 +88,8 @@ public class RecommendationService {
     }
 
     private String generateEventRules() throws Exception{
-        InputStream templateStream = ResourceFactory.newClassPathResource("rules/event-template.drt").getInputStream();
-        InputStream csvStream = ResourceFactory.newClassPathResource("rules/event-data.csv").getInputStream();
+        InputStream templateStream = ResourceFactory.newClassPathResource("rules/forward/event-template.drt").getInputStream();
+        InputStream csvStream = ResourceFactory.newClassPathResource("rules/forward/event-data.csv").getInputStream();
 
         List<Map<String, Object>> rows = new ArrayList<>();
 
@@ -110,10 +117,9 @@ public class RecommendationService {
             RecommendationHistory history = new RecommendationHistory();
 
             history.setSession(session);
-
             history.setVenueName(r.getVenueName());
-
             history.setScore(r.getFinalScore());
+            history.setVenueId(r.getId());
 
             recommendationHistoryRepository.save(history);
         });

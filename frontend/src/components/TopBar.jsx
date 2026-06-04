@@ -81,6 +81,7 @@ function TopBar() {
                     </Button>
 
                     <Button
+                        onClick={() => navigate("/search")}
                         sx={{
                             color: "white",
                             px: 3,
@@ -89,7 +90,7 @@ function TopBar() {
                             "&:hover": { background: "rgba(255,255,255,0.12)"}
                         }}
                     >
-                        Profile
+                        Search
                     </Button>
 
                     <Button
@@ -98,7 +99,6 @@ function TopBar() {
                             px: 3,
                             borderRadius: 3,
                             color: "white",
-
                             background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
                             boxShadow: "0 8px 24px rgba(99,102,241,0.4)",
                             "&:hover": { background: "linear-gradient(135deg,#4f46e5,#7c3aed)"}

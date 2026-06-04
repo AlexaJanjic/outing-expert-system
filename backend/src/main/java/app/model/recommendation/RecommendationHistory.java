@@ -21,4 +21,5 @@ public class RecommendationHistory {
     private RecommendationSession session;
     private String venueName;
     private int score;
+    private Long venueId;
 }

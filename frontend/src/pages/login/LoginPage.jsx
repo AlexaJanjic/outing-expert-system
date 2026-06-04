@@ -7,7 +7,7 @@ import {
     Stack
 } from "@mui/material";
 
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useState } from "react";
 import {login} from "../../services/authService.js";
 
@@ -17,25 +17,23 @@ function LoginPage() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    const handleLogin =
-        async (e) => {
-            e.preventDefault();
-            try {
-                const response = await login({username, password});
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await login({username, password});
 
-                localStorage.setItem("token", response.token);
-                localStorage.setItem("user",JSON.stringify(response.user));
+            localStorage.setItem("token", response.token);
+            localStorage.setItem("user",JSON.stringify(response.user));
 
-                navigate("/home");
-
-            } catch (error) {
-                setError(error.response?.data?.message
-                    || error.response?.data
-                    || error.message
-                    || "Login failed"
-                );
-            }
-        };
+            navigate("/home");
+        } catch (error) {
+            setError(error.response?.data?.message
+                || error.response?.data
+                || error.message
+                || "Login failed"
+            );
+        }
+    };
 
     return (
         <Box

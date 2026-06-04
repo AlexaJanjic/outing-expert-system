@@ -1,32 +1,34 @@
-import axios from "axios";
+import api from "./HttpInterceptor.js";
+import {jwtDecode} from "jwt-decode";
 
-const API_URL =
-    "http://localhost:8080/api/auth";
 
-export const register = async (
-    registerData
-) => {
+export const register = async (registerData) => {
 
-    const response =
-        await axios.post(
-            `${API_URL}/register`,
+    const response = await api.post(
+            "api/auth/register",
             registerData
         );
-
     return response.data;
 };
 
-export const login =
-    async (loginData) => {
-        const response =
-            await axios.post(
-                `${API_URL}/login`,
+export const login = async (loginData) => {
+        const response = await api.post(
+                "api/auth/login",
                 loginData
             );
-
         return response.data;
     };
 
-export const logout = async () => {
-
+export const isTokenValid = () => {
+    const token = localStorage.getItem("token");
+    if(!token){
+        return false;
+    }
+    try{
+        const decoded = jwtDecode(token);
+        const now = new Date() / 1000;
+        return decoded.exp > now;
+    }catch {
+        return false;
+    }
 }

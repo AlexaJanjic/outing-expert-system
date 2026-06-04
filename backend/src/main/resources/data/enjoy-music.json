@@ -1,0 +1,61 @@
+{
+  "music_type": {
+    "Rock": [
+      ["ENJOY_MUSIC", "ROCK_MUSIC"]
+    ],
+
+    "Jazz": [
+      ["ENJOY_MUSIC", "JAZZ_MUSIC"]
+    ],
+
+    "Pop": [
+      ["ENJOY_MUSIC", "POP_MUSIC"]
+    ],
+
+    "Techno": [
+      ["ENJOY_MUSIC", "TECHNO_MUSIC"]
+    ],
+
+    "Folk": [
+      ["ENJOY_MUSIC", "FOLK_MUSIC"]
+    ]
+  },
+
+  "performance": {
+    "Live Band": [
+      ["ENJOY_MUSIC", "LIVE_BAND"]
+    ],
+
+    "DJ": [
+      ["ENJOY_MUSIC", "DJ_EVENT"]
+    ],
+
+    "Either": []
+  },
+
+  "participation": {
+    "Dance All Night": [
+      ["ENJOY_MUSIC", "HIGH_SOCIAL_LEVEL"]
+    ],
+
+    "Sing Along": [
+      ["ENJOY_MUSIC", "LIVE_BAND"]
+    ],
+
+    "Just Listen": [
+      ["ENJOY_MUSIC", "COMFORTABLE"]
+    ]
+  },
+
+  "venue_size": {
+    "Small Intimate Venue": [
+      ["ENJOY_MUSIC", "NOT_CROWDED"]
+    ],
+
+    "Medium Venue": [],
+
+    "Large Concert Atmosphere": [
+      ["ENJOY_MUSIC", "HIGH_SOCIAL_LEVEL"]
+    ]
+  }
+}

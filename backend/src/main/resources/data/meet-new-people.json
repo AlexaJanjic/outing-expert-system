@@ -1,0 +1,54 @@
+{
+  "social_goal": {
+    "Make Friends": [
+      ["MEET_NEW_PEOPLE", "HIGH_SOCIAL_LEVEL"]
+    ],
+
+    "Networking": [
+      ["MEET_NEW_PEOPLE", "GOOD_AMBIANCE"],
+      ["MEET_NEW_PEOPLE", "MODERATE_PRIVACY"]
+    ],
+
+    "Casual Conversations": [
+      ["MEET_NEW_PEOPLE", "NOT_CROWDED"]
+    ]
+  },
+
+  "crowd": {
+    "Love Crowds": [
+      ["MEET_NEW_PEOPLE", "HIGH_SOCIAL_LEVEL"]
+    ],
+
+    "Moderate Crowds": [],
+
+    "Small Groups": [
+      ["MEET_NEW_PEOPLE", "NOT_CROWDED"]
+    ]
+  },
+
+  "activity": {
+    "Live Music": [
+      ["MEET_NEW_PEOPLE", "LIVE_MUSIC"]
+    ],
+
+    "Games": [
+      ["MEET_NEW_PEOPLE", "GAMES_AVAILABLE"]
+    ],
+
+    "Shared Interests": [
+      ["MEET_NEW_PEOPLE", "GOOD_AMBIANCE"]
+    ]
+  },
+
+  "energy": {
+    "Very Social": [
+      ["MEET_NEW_PEOPLE", "HIGH_SOCIAL_LEVEL"]
+    ],
+
+    "Moderately Social": [],
+
+    "Reserved": [
+      ["MEET_NEW_PEOPLE", "NOT_CROWDED"]
+    ]
+  }
+}

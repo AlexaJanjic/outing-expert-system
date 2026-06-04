@@ -21,17 +21,16 @@ import java.util.List;
 @RequestMapping("/api/recommendations")
 @RequiredArgsConstructor
 public class RecommendationController {
-
     private final RecommendationService recommendationService;
     private final UserRepository userRepository;
-    private final RecommendationHistoryRepository recommendationHistoryRepository;
     private final RecommendationSessionRepository recommendationSessionRepository;
 
     @PostMapping("/generate")
     public Object generate(@RequestBody UserPreferences userPreferences, Authentication authentication) throws Exception {
-        String username = authentication.getName();
-        User user = userRepository.findByUsername(username).orElseThrow();
 
+        String username = authentication.getName();
+
+        User user = userRepository.findByUsername(username).orElseThrow();
         user.setPreferences(userPreferences);
 
         userRepository.save(user);
@@ -42,7 +41,6 @@ public class RecommendationController {
         session.setUser(user);
         session.setCreatedAt(LocalDateTime.now());
         session = recommendationSessionRepository.save(session);
-        System.out.println(session +  " sesija");
         recommendationService.saveHistory(session, recommendations);
 
         return recommendations;
@@ -50,8 +48,8 @@ public class RecommendationController {
 
     @GetMapping("/preferences/me")
     public UserPreferences getMyPreferences(Authentication authentication){
-        String username = authentication.getName();
 
+        String username = authentication.getName();
         User user = userRepository.findByUsername(username).orElseThrow();
 
         return user.getPreferences();
@@ -59,8 +57,8 @@ public class RecommendationController {
 
     @GetMapping("/last")
     public RecommendationSessionDto getLastSession(Authentication authentication) {
-        String username = authentication.getName();
 
+        String username = authentication.getName();
         User user = userRepository.findByUsername(username).orElseThrow();
 
         RecommendationSession session =  recommendationSessionRepository
@@ -80,7 +78,8 @@ public class RecommendationController {
                                 new RecommendationHistoryDto(
                                         r.getId(),
                                         r.getVenueName(),
-                                        r.getScore()
+                                        r.getScore(),
+                                        r.getVenueId()
                                 )
                         )
                         .toList()
