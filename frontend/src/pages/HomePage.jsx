@@ -64,14 +64,16 @@ function HomePage() {
 
     const loadLastRecommendations = async () => {
         const data = await getLastRecommendations();
-        setLastRecommendations(data.recommendations);
-        console.log(data);
+        if(!data){
+            setLastRecommendations([]);
+            return;
+        }
+        setLastRecommendations(data.recommendations || []);
     };
 
     const loadTrendingVenues = async () => {
         const data = await getTrendingVenues();
         setTrendingVenues(data);
-        console.log(data, " ---123123");
     }
     const navigate = useNavigate();
 
@@ -79,7 +81,7 @@ function HomePage() {
         loadPreferences();
         loadLastRecommendations();
         loadTrendingVenues();
-    }, [navigate]);
+    }, []);
 
     const handleMusicChange = (music) => {
 
@@ -140,7 +142,6 @@ function HomePage() {
         try {
             const response = await generateRecommendations(payload);
             setRecommendations(response);
-            console.log(response)
         } catch(error){
             console.log(error);
         }
@@ -439,7 +440,7 @@ function HomePage() {
                         }
 
                         {
-                            lastRecommendations.length > 0 && (
+                            lastRecommendations?.length > 0 && (
                                 <Paper
                                     elevation={0}
                                     sx={cardStyle}

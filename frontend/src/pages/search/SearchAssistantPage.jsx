@@ -18,6 +18,7 @@ import {goalQuestions} from "../../data/goalQuestions.js";
 import {searchVenues} from "../../services/SearchService.js";
 import {questionLabels} from "../../data/goalQuestionsLabels.js";
 import ReplayIcon from "@mui/icons-material/Replay";
+import {useNavigate} from "react-router-dom";
 
 function SearchAssistantPage() {
 
@@ -27,6 +28,7 @@ function SearchAssistantPage() {
     const [,setLoading] = useState(false);
     const [answers, setAnswers] = useState({});
     const [noResults, setNoResults] = useState(false);
+    const navigate = useNavigate();
     const steps = [
         "Choose Goal",
         "Questions",
@@ -465,10 +467,16 @@ function SearchAssistantPage() {
 
                                             <Box
                                                 key={venue.venueId}
+                                                onClick={() => navigate(`/venues/${venue.venueId}`)}
                                                 sx={{
                                                     p: 3,
                                                     borderRadius: 3,
-                                                    background: "rgba(255,255,255,0.05)"
+                                                    background: "rgba(255,255,255,0.05)",
+                                                    cursor: "pointer",
+                                                    transition: "0.2s",
+                                                    "&hover": {
+                                                        background: "rgba(255,255,255,0.8)"
+                                                    }
                                                 }}
                                             >
                                                 <Typography

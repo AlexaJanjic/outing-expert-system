@@ -1,6 +1,6 @@
 export const goals = [
     {
-        icon: "❤",
+        icon: "❤️",
         title: "Impress Someone",
         description: "Find venues that create a memorable impression.",
         id: "IMPRESS_SOMEONE"

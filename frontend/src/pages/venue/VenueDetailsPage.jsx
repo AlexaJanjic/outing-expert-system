@@ -275,7 +275,7 @@ return (
                                 mt: 1
                             }}
                         >
-                            Average Price: €{venue.averagePrice}
+                            Average Price: {venue.averagePrice}
                         </Typography>
 
                         <Typography
