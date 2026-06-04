@@ -1,0 +1,23 @@
+export const questionLabels = {
+    impression_type: "Impression Type",
+    privacy: "Privacy",
+    budget: "Budget",
+    music: "Music",
+    celebration_type: "Celebration Type",
+    group_size: "Group Size",
+    atmosphere: "Atmosphere",
+    party_level: "Party Level",
+    relax_style: "Relaxation Style",
+    noise: "Noise Preference",
+    crowd: "Crowd Preference",
+    setting: "Preferred Setting",
+    social_goal: "Social Goal",
+    activity: "Preferred Activity",
+    energy: "Social Energy",
+    music_type: "Music Type",
+    performance: "Performance Type",
+    participation: "Participation Level",
+    venue_size: "Venue Size",
+    night_type: "Night Type",
+    activities: "Activities Available"
+};

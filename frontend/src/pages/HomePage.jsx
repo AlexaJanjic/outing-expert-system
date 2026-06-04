@@ -18,6 +18,7 @@ import {generateRecommendations, getLastRecommendations, getMyPreferences} from 
 import {EventTypeLabels} from "../models/eventtype.js";
 import TopBar from "../components/TopBar.jsx";
 import {useNavigate} from "react-router-dom";
+import {getTrendingVenues} from "../services/venueService.js";
 
 function HomePage() {
 
@@ -39,12 +40,7 @@ function HomePage() {
 
     const [lastRecommendations, setLastRecommendations] = useState([]);
 
-    const trendingVenues = [
-        "Club Infinity",
-        "Sky Lounge",
-        "Retro Bar",
-        "Underground Club"
-    ];
+    const [trendingVenues, setTrendingVenues] = useState([]);
 
 
     const loadPreferences = async () => {
@@ -66,22 +62,23 @@ function HomePage() {
         }
     };
 
-    const loadLastRecommendations =
-        async () => {
-            const data = await getLastRecommendations();
-            setLastRecommendations(data.recommendations);
-        };
+    const loadLastRecommendations = async () => {
+        const data = await getLastRecommendations();
+        setLastRecommendations(data.recommendations);
+        console.log(data);
+    };
 
+    const loadTrendingVenues = async () => {
+        const data = await getTrendingVenues();
+        setTrendingVenues(data);
+        console.log(data, " ---123123");
+    }
     const navigate = useNavigate();
 
     useEffect(() => {
-
-        const token  = localStorage.getItem("token")
-        if(token == null) {
-            navigate("/");
-        }
         loadPreferences();
         loadLastRecommendations();
+        loadTrendingVenues();
     }, [navigate]);
 
     const handleMusicChange = (music) => {
@@ -143,6 +140,7 @@ function HomePage() {
         try {
             const response = await generateRecommendations(payload);
             setRecommendations(response);
+            console.log(response)
         } catch(error){
             console.log(error);
         }
@@ -462,7 +460,7 @@ function HomePage() {
                                             lastRecommendations.map((venue, index) => (
                                                     <Box
                                                         key={index}
-                                                        onClick={() => navigate(`/venues/${venue.id}`)}
+                                                        onClick={() => navigate(`/venues/${venue.venueId}`)}
                                                         sx={{
                                                             p: 2,
                                                             borderRadius: 3,
@@ -494,47 +492,51 @@ function HomePage() {
                             )
                         }
 
-                        <Paper
-                            elevation={0}
-                            sx={cardStyle}
-                        >
-                            <Typography
-                                variant="h5"
-                                fontWeight={700}
-                                sx={{
-                                    color: "white",
-                                    mb: 3
-                                }}
-                            >
-                                🔥 Trending Venues
-                            </Typography>
+                        {
+                            trendingVenues.length > 0 && (
+                                <Paper
+                                    elevation={0}
+                                    sx={cardStyle}
+                                >
+                                    <Typography
+                                        variant="h5"
+                                        fontWeight={700}
+                                        sx={{
+                                            color: "white",
+                                            mb: 3
+                                        }}
+                                    >
+                                        🔥 Trending Venues
+                                    </Typography>
 
-                            <Stack spacing={2}>
-                                {
-                                    trendingVenues.map((venue, index) => (
-                                            <Box
-                                                key={index}
-                                                onClick={() => navigate(`/venues/${venue.id}`)}
-                                                sx={{
-                                                    p: 2,
-                                                    borderRadius: 3,
-                                                    background: "rgba(255,255,255,0.05)"
-                                                }}
-                                            >
-                                                <Typography
+                                    <Stack spacing={2}>
+                                        {
+                                            trendingVenues.map((venue, index) => (
+                                                <Box
+                                                    key={index}
+                                                    onClick={() => navigate(`/venues/${venue.id}`)}
                                                     sx={{
-                                                        color: "white",
-                                                        fontWeight: 600
+                                                        p: 2,
+                                                        borderRadius: 3,
+                                                        background: "rgba(255,255,255,0.05)",
+                                                        cursor: "pointer"
                                                     }}
                                                 >
-                                                    {venue}
-                                                </Typography>
-                                            </Box>
-                                        )
-                                    )
-                                }
-                            </Stack>
-                        </Paper>
+                                                    <Typography
+                                                        sx={{
+                                                            color: "white",
+                                                            fontWeight: 600
+                                                        }}
+                                                    >
+                                                        {venue.venueName}
+                                                    </Typography>
+                                                </Box>
+                                            ))
+                                        }
+                                    </Stack>
+                                </Paper>
+                            )
+                        }
 
                     </Stack>
                 </Box>

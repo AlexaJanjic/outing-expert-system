@@ -11,4 +11,5 @@ public class RecommendationHistoryDto {
     private Long id;
     private String venueName;
     private int score;
+    private Long venueId;
 }

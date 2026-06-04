@@ -30,4 +30,16 @@ public class Venue {
     @ElementCollection(targetClass = EventType.class)
     @Enumerated(EnumType.STRING)
     private List<EventType> events;
+    private boolean djPerformance;
+    private boolean privateTables;
+    private boolean premiumService;
+    private boolean outdoorSeating;
+    private boolean qualityFood;
+    private boolean gamesAvailable;
+    private boolean sportsStreaming;
+    private int noiseLevel;
+    private int socialLevel;
+    private int atmosphereLevel;
+    private int comfortLevel;
+    private int serviceLevel;
 }

@@ -3,7 +3,7 @@ template header
 eventType
 score
 
-package rules
+package rules.forward
 
 import app.model.user.UserPreferences
 import app.model.recommendation.Venue

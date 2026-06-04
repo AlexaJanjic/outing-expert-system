@@ -4,6 +4,6 @@ public enum MatchType {
     MUSIC,
     BUDGET,
     CROWD,
-    GROUP_SIZE,
+    TRENDING,
     EVENT
 }

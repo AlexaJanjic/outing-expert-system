@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/login/LoginPage.jsx";
 import RegisterPage from "./pages/register/RegisterPage.jsx";
 import HomePage from "./pages/HomePage";
+import SearchAssistantPage from "./pages/search/SearchAssistantPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import VenueDetailsPage from "./pages/venue/VenueDetailsPage.jsx";
 
 function App() {
   return (
@@ -26,12 +29,16 @@ function App() {
 
           <Route
               path="/home"
-              element={<HomePage />}
+              element={<ProtectedRoute> <HomePage /> </ProtectedRoute>}
           />
 
           <Route
                 path="/venues/:id"
-                // element={<VenueDetailsPage />}
+                element={<ProtectedRoute><VenueDetailsPage /> </ProtectedRoute>}
+          />
+          <Route
+              path="search"
+              element={<ProtectedRoute> <SearchAssistantPage/> </ProtectedRoute>}
           />
 
         </Routes>

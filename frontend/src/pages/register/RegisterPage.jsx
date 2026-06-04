@@ -14,16 +14,13 @@ import { register } from "../../services/authService.js"
 function RegisterPage() {
 
     const navigate = useNavigate();
-
     const [formData, setFormData] = useState({
         username: "",
         email: "",
         password: "",
         confirmPassword: ""
     });
-
     const [errors, setErrors] = useState({});
-
     const [backendError, setBackendError] = useState("");
 
     const handleChange = (e) => {
@@ -34,7 +31,6 @@ function RegisterPage() {
     };
 
     const validateField = (name, value) => {
-
         let error = "";
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -76,7 +72,6 @@ function RegisterPage() {
     };
 
     const isFormValid = () => {
-
         return (
             formData.username.trim().length >= 3 &&
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
@@ -85,23 +80,22 @@ function RegisterPage() {
         );
     };
 
-    const handleRegister =
-        async (e) => {
-            e.preventDefault();
-            try {
-                setBackendError("");
-                await register({
-                    username: formData.username,
-                    email: formData.email,
-                    password: formData.password
-                });
-                navigate("/");
-            } catch (error) {
-                setBackendError(
-                    error.response.data.message
-                );
-            }
-        };
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        try {
+            setBackendError("");
+            await register({
+                username: formData.username,
+                email: formData.email,
+                password: formData.password
+            });
+            navigate("/");
+        } catch (error) {
+            setBackendError(
+                error.response.data.message
+            );
+        }
+    };
 
     const textFieldSx = {
         "& .MuiFormHelperText-root": {color: "#f87171"},

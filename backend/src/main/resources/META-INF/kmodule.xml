@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kmodule xmlns="http://www.drools.org/xsd/kmodule">
+
+    <kbase name="backwardBase"
+           packages="rules.backward">
+        <ksession name="backwardSession"/>
+    </kbase>
+
+    <kbase name="cepBase"
+           packages="rules.cep, rules.forward"
+           eventProcessingMode="stream">
+
+        <ksession name="cepSession"/>
+
+    </kbase>
+
+</kmodule>

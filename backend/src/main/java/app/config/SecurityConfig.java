@@ -18,7 +18,6 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -31,10 +30,8 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
-                        auth
-                                .requestMatchers(
-                                        "/api/auth/**"
-                                ).permitAll()
+                        auth.requestMatchers("/api/auth/**")
+                                .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
@@ -50,15 +47,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
 
-        configuration.setAllowedMethods(
-                List.of(
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "DELETE",
-                        "OPTIONS"
-                )
-        );
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         configuration.setAllowedHeaders(List.of("*"));
 

@@ -1,0 +1,53 @@
+{
+  "group_size": {
+    "2-4": [],
+
+    "5-8": [
+      ["HAVE_FUN", "MEDIUM_CAPACITY"]
+    ],
+
+    "8+": [
+      ["HAVE_FUN", "LARGE_CAPACITY"]
+    ]
+  },
+
+  "night_type": {
+    "Casual Drinks": [
+      ["HAVE_FUN", "GOOD_AMBIANCE"]
+    ],
+
+    "Party": [
+      ["HAVE_FUN", "HIGH_SOCIAL_LEVEL"],
+      ["HAVE_FUN", "LIVE_MUSIC"]
+    ],
+
+    "Sports Night": [
+      ["HAVE_FUN", "SPORTS_STREAMING"]
+    ],
+
+    "Mixed": [
+      ["HAVE_FUN", "HIGH_SOCIAL_LEVEL"],
+      ["HAVE_FUN", "GAMES_AVAILABLE"]
+    ]
+  },
+
+  "activities": {
+    "Yes": [
+      ["HAVE_FUN", "GAMES_AVAILABLE"]
+    ],
+
+    "Maybe": [],
+
+    "No": []
+  },
+
+  "budget": {
+    "Very Important": [
+      ["HAVE_FUN", "AFFORDABLE"]
+    ],
+
+    "Somewhat Important": [],
+
+    "Not Important": []
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "impression_type": {
+    "Romantic": [
+      ["IMPRESS_SOMEONE", "ROMANTIC_EXPERIENCE"],
+
+      ["ROMANTIC_EXPERIENCE", "INTIMATE_ATMOSPHERE"],
+      ["INTIMATE_ATMOSPHERE", "LOW_NOISE"],
+      ["INTIMATE_ATMOSPHERE", "NOT_CROWDED"],
+
+      ["ROMANTIC_EXPERIENCE", "MEMORABLE_AMBIANCE"],
+      ["MEMORABLE_AMBIANCE", "GOOD_AMBIANCE"],
+      ["MEMORABLE_AMBIANCE", "COMFORTABLE"]
+    ],
+
+    "Sophisticated": [
+      ["IMPRESS_SOMEONE", "PREMIUM_EXPERIENCE"],
+
+      ["PREMIUM_EXPERIENCE", "EXCLUSIVE_SERVICE"],
+      ["EXCLUSIVE_SERVICE", "PREMIUM_SERVICE"],
+      ["EXCLUSIVE_SERVICE", "PRIVATE_TABLES"],
+
+      ["PREMIUM_EXPERIENCE", "LUXURY_ATMOSPHERE"],
+      ["LUXURY_ATMOSPHERE", "GOOD_AMBIANCE"],
+      ["LUXURY_ATMOSPHERE", "COMFORTABLE"]
+    ],
+
+    "Fun": [
+      ["IMPRESS_SOMEONE", "FUN_EXPERIENCE"],
+
+      ["FUN_EXPERIENCE", "SOCIAL_ENVIRONMENT"],
+      ["SOCIAL_ENVIRONMENT", "HIGH_SOCIAL_LEVEL"],
+
+      ["FUN_EXPERIENCE", "ENTERTAINMENT"],
+      ["ENTERTAINMENT", "LIVE_MUSIC"],
+      ["ENTERTAINMENT", "GAMES_AVAILABLE"],
+
+      ["FUN_EXPERIENCE", "VIBRANT_ATMOSPHERE"],
+      ["VIBRANT_ATMOSPHERE", "GOOD_AMBIANCE"]
+    ]
+  },
+
+  "privacy": {
+    "Very Private": [
+      ["IMPRESS_SOMEONE", "PRIVATE_TABLES"]
+    ],
+
+    "Moderately Private": [
+      ["IMPRESS_SOMEONE", "MODERATE_PRIVACY"],
+      ["MODERATE_PRIVACY", "NOT_CROWDED"]
+    ],
+
+    "Doesn't Matter": []
+  },
+
+  "budget": {
+    "Budget Friendly": [
+      ["IMPRESS_SOMEONE", "AFFORDABLE"],
+      ["AFFORDABLE", "LOW_PRICE"]
+    ],
+
+    "Moderate": [
+      ["IMPRESS_SOMEONE", "REASONABLE_PRICE"]
+    ],
+
+    "Premium": [
+      ["IMPRESS_SOMEONE", "PREMIUM_SERVICE"],
+      ["IMPRESS_SOMEONE", "COMFORTABLE"]
+    ]
+  },
+
+  "music": {
+    "Definitely": [
+      ["IMPRESS_SOMEONE", "LIVE_MUSIC"]
+    ],
+
+    "Maybe": [
+      ["IMPRESS_SOMEONE", "OPTIONAL_LIVE_MUSIC"]
+    ],
+    "Not Important": []
+  }
+}
