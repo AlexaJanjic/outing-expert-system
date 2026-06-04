@@ -11,12 +11,12 @@ end
 
 declare TrendingVenueFact
     @role(event)
-    @expires(1m)
+    @expires(30m)
 end
 
 declare CrowdedVenueFact
     @role(event)
-    @expires(1m)
+    @expires(30m)
 end
 
 rule "Venue is trending"
