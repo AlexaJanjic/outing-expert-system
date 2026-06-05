@@ -15,7 +15,7 @@ public class VenueController {
     private final VenueService venueService;
 
     @GetMapping("/{id}")
-    public VenueDto getVenue(@PathVariable Long id){
+    public VenueDto getVenue(@PathVariable("id") Long id){
         return venueService.getVenue(id);
     }
 }
