@@ -70,11 +70,18 @@ public class TreeBuilderService {
 
             Set<Goal> parents = rules.stream().map(GoalRule::getParentGoal).collect(Collectors.toSet());
 
+            Set<Goal> children = rules.stream()
+                    .map(GoalRule::getChildGoal)
+                    .collect(Collectors.toSet());
+
+            Set<Goal> rootGoals = new HashSet<>(parents);
+            rootGoals.removeAll(children);
+
             for(Set<Goal> goals: answerGoals.values()){
                 goals.removeIf(parents::contains);
             }
 
-            return new SearchTree(rules, answerGoals);
+            return new SearchTree(rules, answerGoals, rootGoals);
 
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -55,42 +55,63 @@ public class SearchService {
                 Set<Goal> matchedLeafGoals = new HashSet<>();
                 Set<Goal> missingGoals = new HashSet<>();
 
-                for (Goal leafGoal : leafGoals) {
 
-                    QueryResults queryResults = kieSession.getQueryResults("goalSatisfied", leafGoal);
+                Goal rootGoal = tree.getRootGoals().iterator().next();
+                Set<Goal> allGoals = collectAllGoals(rootGoal, tree.getRules());
 
-                    if (queryResults.size() > 0) {
-                        matchedLeafGoals.add(leafGoal);
-                    } else {
-                        missingGoals.add(leafGoal);
-                    }
-                }
+                int matched = 0;
+
+                QueryResults rootResults =
+                        kieSession.getQueryResults(
+                                "goalSatisfied",
+                                rootGoal
+                        );
+
+                boolean rootSatisfied = rootResults.size() > 0;
+
+                double score = (double) matched / allGoals.size() * 100;
 
                 List<RequirementResult> requirements = new ArrayList<>();
 
-                for(Map.Entry<String, Set<Goal>> entry : tree.getAnswerGoals().entrySet()) {
+                if (rootSatisfied){
+                    for (Goal leafGoal : leafGoals) {
 
-                    String questionId = entry.getKey();
+                        QueryResults queryResults = kieSession.getQueryResults("goalSatisfied", leafGoal);
 
-                    Set<Goal> goalsForAnswer = entry.getValue();
-
-                    boolean satisfied = false;
-
-                    for(Goal goal : goalsForAnswer) {
-
-                        if(matchedLeafGoals.contains(goal)) {
-                            satisfied = true;
-                            break;
+                        if (queryResults.size() > 0) {
+                            matchedLeafGoals.add(leafGoal);
+                        } else {
+                            missingGoals.add(leafGoal);
                         }
                     }
 
-                    requirements.add(new RequirementResult(questionId, satisfied));
+
+
+                    for(Map.Entry<String, Set<Goal>> entry : tree.getAnswerGoals().entrySet()) {
+
+                        String questionId = entry.getKey();
+
+                        Set<Goal> goalsForAnswer = entry.getValue();
+
+                        boolean satisfied = false;
+
+                        for(Goal goal : goalsForAnswer) {
+
+                            if(matchedLeafGoals.contains(goal)) {
+                                satisfied = true;
+                                break;
+                            }
+                        }
+
+                        requirements.add(new RequirementResult(questionId, satisfied));
+                    }
+
+                     matched = matchedLeafGoals.size();
+
+                     score = leafGoals.isEmpty() ? 0 : matched * 100.0 / leafGoals.size();
+
+
                 }
-
-                long matched = matchedLeafGoals.size();
-
-                double score = leafGoals.isEmpty() ? 0 : matched * 100.0 / leafGoals.size();
-
 
                 SearchResult result = new SearchResult();
                 result.setVenueId(venue.getId());
@@ -125,5 +146,23 @@ public class SearchService {
         children.removeAll(parents);
 
         return children;
+    }
+
+    private Set<Goal> collectAllGoals(Goal root, List<GoalRule> rules){
+        Set<Goal> result = new HashSet<>();
+
+        collect(root, rules, result);
+
+        return result;
+    }
+
+    private void collect(Goal current, List<GoalRule> rules, Set<Goal> result){
+        if(!result.add(current)){return;}
+
+        for(GoalRule rule: rules){
+            if(rule.getParentGoal() == current){
+                collect(rule.getChildGoal(), rules, result);
+            }
+        }
     }
 }

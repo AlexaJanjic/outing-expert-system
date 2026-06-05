@@ -16,4 +16,5 @@ import java.util.Set;
 public class SearchTree {
     private List<GoalRule> rules;
     private Map<String, Set<Goal>> answerGoals;
+    private Set<Goal> rootGoals;
 }
